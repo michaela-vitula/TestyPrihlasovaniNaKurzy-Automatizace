@@ -9,9 +9,20 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+
 public class TestyPrihlasovaniNaKurzy {
 
     WebDriver browser;
+
+    public void fillLogInForm() {
+        WebElement emailForm = browser.findElement(By.id("email"));
+        WebElement passwordForm = browser.findElement(By.id("password"));
+        WebElement submit = browser.findElement(By.xpath("//button[@type='submit']"));
+
+        emailForm.sendKeys("misalangelo@gmail.com");
+        passwordForm.sendKeys("Automatizace1");
+        submit.click();
+    }
 
     @BeforeEach
     public void setUp() {
@@ -22,15 +33,9 @@ public class TestyPrihlasovaniNaKurzy {
 
     @Test
     public void logInForm() {
-        browser.navigate().to("https://cz-test-jedna.herokuapp.com/prihlaseni");
+        browser.navigate().to("https://cz-test-dva.herokuapp.com/prihlaseni");
 
-        WebElement emailForm = browser.findElement(By.id("email"));
-        WebElement passwordForm = browser.findElement(By.id("password"));
-        WebElement submit = browser.findElement(By.xpath("//button[@type='submit']"));
-
-        emailForm.sendKeys("misalangelo@gmail.com");
-        passwordForm.sendKeys("Automatizace1");
-        submit.click();
+        fillLogInForm();
 
         WebElement succesfullyLogedIn = browser.findElement(By.xpath("//span[text() = 'Přihlášen']"));
         Assertions.assertNotNull("succesfullyLogedIn");
@@ -38,61 +43,49 @@ public class TestyPrihlasovaniNaKurzy {
 
     @Test
     public void registrationWithExistingAccountFirstChooseThenLogIn() {
-        browser.navigate().to("https://cz-test-jedna.herokuapp.com/31-trimesicni-kurzy-programova");
+        browser.navigate().to("https://cz-test-dva.herokuapp.com/31-trimesicni-kurzy-programova");
 
-        WebElement createApplication = browser.findElement(By.xpath("//a[@href = 'https://cz-test-jedna.herokuapp.com/zaci/pridat/71-java-1']"));
+        WebElement createApplication = browser.findElement(By.xpath("//a[@href = 'https://cz-test-dva.herokuapp.com/zaci/pridat/71-java-1']"));
         createApplication.click();
 
-        WebElement emailForm = browser.findElement(By.id("email"));
-        WebElement passwordForm = browser.findElement(By.id("password"));
-        WebElement submit = browser.findElement(By.xpath("//button[@type='submit']"));
+        fillLogInForm();
 
-        emailForm.sendKeys("misalangelo@gmail.com");
-        passwordForm.sendKeys("Automatizace1");
-        submit.click();
+        WebElement chooseDate = browser.findElement(By.xpath("//div[contains(text(),'Vyberte termín...')]"));
+        chooseDate.click();
+        WebElement specificDate = browser.findElement(By.className("text"));
+        specificDate.click();
+        WebElement fillInForename = browser.findElement(By.id("forename"));
+        fillInForename.click();
+        fillInForename.sendKeys("Míša");
+        WebElement fillInSurname = browser.findElement(By.id("surname"));
+        fillInSurname.click();
+        fillInSurname.sendKeys("Langová");
+        WebElement fillInBirthday = browser.findElement(By.id("birthday"));
+        fillInBirthday.click();
+        fillInBirthday.sendKeys("6.6.2006");
+        WebElement choosePayForm = browser.findElement(By.xpath("//span/label[@for = 'payment_cash']"));
+        choosePayForm.click();
+        WebElement termsConditionsAprove = browser.findElement(By.xpath("//span/label[@for = 'terms_conditions']"));
+        termsConditionsAprove.click();
+        WebElement submitRegistrationOfChild = browser.findElement(By.xpath("//input[@type='submit']"));
+        submitRegistrationOfChild.click();
 
-       WebElement chooseDate = browser.findElement(By.xpath("//div[contains(text(),'Vyberte termín...')]"));
-       chooseDate.click();
-       WebElement specificDate = browser.findElement(By.className("text"));
-       specificDate.click();
-       WebElement fillInForename = browser.findElement(By.id("forename"));
-       fillInForename.click();
-       fillInForename.sendKeys("Míša");
-       WebElement fillInSurname = browser.findElement(By.id("surname"));
-       fillInSurname.click();
-       fillInSurname.sendKeys("Langová");
-       WebElement fillInBirthday = browser.findElement(By.id("birthday"));
-       fillInBirthday.click();
-       fillInBirthday.sendKeys("6.6.2006");
-       WebElement choosePayForm = browser.findElement(By.xpath("//span/label[@for = 'payment_cash']"));
-       choosePayForm.click();
-       WebElement termsConditionsAprove = browser.findElement(By.xpath("//span/label[@for = 'terms_conditions']"));
-       termsConditionsAprove.click();
-       WebElement submitRegistrationOfChild = browser.findElement(By.xpath("//input[@type='submit']"));
-       submitRegistrationOfChild.click();
+        WebElement printRegistration = browser.findElement(By.xpath("//a[@title = 'Stáhnout potvrzení o přihlášení']"));
+        Assertions.assertNotNull(printRegistration);
 
-       WebElement printRegistration = browser.findElement(By.xpath("//a[@title = 'Stáhnout potvrzení o přihlášení']"));
-       Assertions.assertNotNull(printRegistration);
+        WebElement buttonPrihlasky = browser.findElement(By.xpath("//a[@href = 'https://cz-test-dva.herokuapp.com/zaci']"));
+        buttonPrihlasky.click();
 
-       WebElement buttonPrihlasky = browser.findElement(By.xpath("//a[@href = 'https://cz-test-jedna.herokuapp.com/zaci']"));
-       buttonPrihlasky.click();
-
-       WebElement buttonDetail = browser.findElement(By.xpath("//a[@title = 'Zobrazit']"));
-       Assertions.assertNotNull(buttonDetail);
+        WebElement buttonDetail = browser.findElement(By.xpath("//a[@title = 'Zobrazit']"));
+        Assertions.assertNotNull(buttonDetail);
     }
 
 
     @Test
     public void registrationWithExistingAccountLogInFirst() {
-        browser.navigate().to("https://cz-test-jedna.herokuapp.com/prihlaseni");
+        browser.navigate().to("https://cz-test-dva.herokuapp.com/prihlaseni");
 
-        WebElement emailForm = browser.findElement(By.id("email"));
-        WebElement passwordForm = browser.findElement(By.id("password"));
-        WebElement submit = browser.findElement(By.xpath("//button[@type='submit']"));
-
-        emailForm.sendKeys("misalangelo@gmail.com");
-        passwordForm.sendKeys("Automatizace1");
-        submit.click();
+        fillLogInForm();
 
         WebElement buttonVytvoritPrihlasku = browser.findElement(By.xpath("//div/a/i[contains(@class, 'fa-plus-circle')]"));
         buttonVytvoritPrihlasku.click();
@@ -101,7 +94,7 @@ public class TestyPrihlasovaniNaKurzy {
         WebElement thirdButtonViceInformaci = listOfButtonsCourses.get(2);
         thirdButtonViceInformaci.click();
 
-        WebElement createApplication = browser.findElement(By.xpath("//a[@href = 'https://cz-test-jedna.herokuapp.com/zaci/pridat/71-java-1']"));
+        WebElement createApplication = browser.findElement(By.xpath("//a[@href = 'https://cz-test-dva.herokuapp.com/zaci/pridat/71-java-1']"));
         createApplication.click();
         WebElement chooseDate = browser.findElement(By.xpath("//div[contains(text(),'Vyberte termín...')]"));
         chooseDate.click();
@@ -126,19 +119,14 @@ public class TestyPrihlasovaniNaKurzy {
         WebElement printRegistration = browser.findElement(By.xpath("//a[@title = 'Stáhnout potvrzení o přihlášení']"));
         Assertions.assertNotNull(printRegistration);
     }
+
     @Test
     //parent should be able to quit registration in a list of application on existing account, logged in first
     //pre.:single application form created first, cleared list of applications
     public void quittingExistingApplicationLogedInFirst() {
-        browser.navigate().to("https://cz-test-jedna.herokuapp.com/prihlaseni");
+        browser.navigate().to("https://cz-test-dva.herokuapp.com/prihlaseni");
         //Logg In
-        WebElement emailForm = browser.findElement(By.id("email"));
-        WebElement passwordForm = browser.findElement(By.id("password"));
-        WebElement submit = browser.findElement(By.xpath("//button[@type='submit']"));
-
-        emailForm.sendKeys("misalangelo@gmail.com");
-        passwordForm.sendKeys("Automatizace1");
-        submit.click();
+        fillLogInForm();
 
         //Create application
         WebElement buttonVytvoritPrihlasku = browser.findElement(By.xpath("//div/a/i[contains(@class, 'fa-plus-circle')]"));
@@ -148,7 +136,7 @@ public class TestyPrihlasovaniNaKurzy {
         WebElement thirdButtonViceInformaci = listOfButtonsCourses.get(2);
         thirdButtonViceInformaci.click();
 
-        WebElement createApplication = browser.findElement(By.xpath("//a[@href = 'https://cz-test-jedna.herokuapp.com/zaci/pridat/71-java-1']"));
+        WebElement createApplication = browser.findElement(By.xpath("//a[@href = 'https://cz-test-dva.herokuapp.com/zaci/pridat/71-java-1']"));
         createApplication.click();
         WebElement chooseDate = browser.findElement(By.xpath("//div[contains(text(),'Vyberte termín...')]"));
         chooseDate.click();
